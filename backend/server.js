@@ -31,7 +31,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
 ]
 
-import cors from "cors";
+
 
 app.use(cors({
   origin: [
