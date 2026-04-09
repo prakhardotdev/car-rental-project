@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://car-rental-project-1-so2f.onrender.com',
         changeOrigin: true,
       },
     },

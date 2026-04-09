@@ -1,6 +1,6 @@
 # 🔌 LuxeDrive API Documentation
 
-Base URL: `http://localhost:5000/api` (dev) | `https://your-api.onrender.com/api` (prod)
+Base URL: `https://car-rental-project-1-so2f.onrender.com/api` (dev) | `https://your-api.onrender.com/api` (prod)
 
 All protected routes require: `Authorization: Bearer <JWT_TOKEN>`
 
@@ -43,7 +43,7 @@ Error responses additionally include:
 
 ### Example — Login
 ```bash
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST https://car-rental-project-1-so2f.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"user@luxedrive.com","password":"password123"}'
 ```
@@ -99,7 +99,7 @@ Response:
 
 ### Example — Create Car (Admin)
 ```bash
-curl -X POST http://localhost:5000/api/cars \
+curl -X POST https://car-rental-project-1-so2f.onrender.com/api/cars \
   -H "Authorization: Bearer <ADMIN_TOKEN>" \
   -F "name=Porsche Taycan" \
   -F "brand=Porsche" \

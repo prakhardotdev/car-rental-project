@@ -19,9 +19,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "VITE_API_URL": "@luxedrive-api-url",
-    "VITE_STRIPE_PUBLISHABLE_KEY": "@stripe-publishable-key"
-  }
+  ]
 }

@@ -202,12 +202,12 @@ cp .env.example .env
 # Fill in .env (at minimum: MONGODB_URI and JWT_SECRET)
 npm install
 npm run seed    # seeds database with 8 cars + admin + demo user
-npm run dev     # → http://localhost:5000
+npm run dev     # → https://car-rental-project-1-so2f.onrender.com
 
 # Terminal 2 — Frontend
 cd frontend
 cp .env.example .env
-# VITE_API_URL=http://localhost:5000/api  (already default)
+# VITE_API_URL=https://car-rental-project-1-so2f.onrender.com/api  (already default)
 npm install
 npm run dev     # → http://localhost:3000
 ```

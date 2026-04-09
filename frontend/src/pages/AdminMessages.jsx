@@ -4,14 +4,14 @@ export default function AdminMessages() {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/contacts")
+    fetch("https://car-rental-project-1-so2f.onrender.com/api/admin/contacts")
       .then(res => res.json())
       .then(data => setMessages(data))
       .catch(err => console.error(err))
   }, [])
 
   const markAsRead = async (id) => {
-    await fetch(`http://localhost:5000/api/admin/contacts/${id}`, {
+    await fetch(`https://car-rental-project-1-so2f.onrender.com/api/admin/contacts/${id}`, {
       method: "PUT",
     })
 
