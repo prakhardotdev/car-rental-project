@@ -26,20 +26,25 @@ const PORT = process.env.PORT || 5000
 // Security
 app.use(helmet())
 
-// CORS
+// 🔥 CORS FIX (FINAL)
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000',
+  "http://localhost:5173",
+  "https://car-rental-project15.vercel.app"
 ]
 
-
-
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://car-rental-project15.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
   credentials: true
-}));
+}))
+
+// 🔥 IMPORTANT (handle preflight requests)
+app.options('*', cors())
 
 // Rate limit
 const limiter = rateLimit({
@@ -62,7 +67,7 @@ app.use('/api/bookings', bookingRoutes)
 app.use('/api/payments', paymentRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/admin', adminRoutes)
-app.use('/api/contact', contactRoutes) 
+app.use('/api/contact', contactRoutes)
 
 // Error handlers
 app.use(notFound)
