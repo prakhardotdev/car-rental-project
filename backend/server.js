@@ -31,13 +31,15 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
 ]
 
+import cors from "cors";
+
 app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true)
-    cb(new Error('Not allowed by CORS'))
-  },
-  credentials: true,
-}))
+  origin: [
+    "http://localhost:5173",
+    "https://car-rental-project15.vercel.app"
+  ],
+  credentials: true
+}));
 
 // Rate limit
 const limiter = rateLimit({

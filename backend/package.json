@@ -6,14 +6,12 @@
   "scripts": {
     "dev": "nodemon server.js",
     "seed": "node src/seed/cars.seed.js",
-   
-  "start": "node server.js"
-
+    "start": "node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.3",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
