@@ -26,25 +26,11 @@ const PORT = process.env.PORT || 5000
 // Security
 app.use(helmet())
 
-// 🔥 CORS FIX (FINAL)
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://car-rental-project15.vercel.app"
-]
-
+// ✅ SIMPLE & BEST CORS FIX (no future issues)
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
+  origin: true,
   credentials: true
 }))
-
-// 🔥 IMPORTANT (handle preflight requests)
-app.options('*', cors())
 
 // Rate limit
 const limiter = rateLimit({
@@ -59,6 +45,11 @@ app.use(express.urlencoded({ extended: true }))
 
 // Logger
 app.use(morgan('dev'))
+
+// ✅ Health route (important for testing)
+app.get('/', (req, res) => {
+  res.send('API is running 🚀')
+})
 
 // Routes
 app.use('/api/auth', authRoutes)
