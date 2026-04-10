@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import api from '../utils/api'
 
@@ -10,72 +10,70 @@ export default function Contact() {
   })
   const [loading, setLoading] = useState(false)
 
-  // ✅ FIX: reload par old toast remove
-  useEffect(() => {
-    toast.dismiss()
-  }, [])
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
+
+    if (!form.name || !form.email || !form.message) {
+      return toast.error('All fields required')
+    }
 
     try {
+      setLoading(true)
+
       await api.post('/contact', form)
-      toast.success('Message sent successfully 🚀', {
-        duration: 2000
+
+      toast.success('Message sent successfully 🚀')
+
+      setForm({
+        name: '',
+        email: '',
+        message: ''
       })
-      setForm({ name: '', email: '', message: '' })
+
     } catch (err) {
-      toast.error('Failed to send message')
+      toast.error(err.response?.data?.message || 'Error')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="pt-24 min-h-screen px-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl text-white font-bold mb-6">Contact Us 📩</h1>
+    <div className="max-w-3xl mx-auto py-16 px-4">
+      <h1 className="text-3xl text-white mb-6">Contact Us 📩</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5 card-dark p-6 rounded-xl">
-
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
-          type="text"
           name="name"
-          placeholder="Your Name"
           value={form.name}
           onChange={handleChange}
+          placeholder="Your Name"
           className="input-dark w-full"
-          required
         />
 
         <input
-          type="email"
           name="email"
-          placeholder="Your Email"
           value={form.email}
           onChange={handleChange}
+          placeholder="Your Email"
           className="input-dark w-full"
-          required
         />
 
         <textarea
           name="message"
-          placeholder="Your Message..."
           value={form.message}
           onChange={handleChange}
-          rows={4}
-          className="input-dark w-full resize-none"
-          required
+          placeholder="Your Message..."
+          className="input-dark w-full h-32"
         />
 
         <button
           type="submit"
+          className="btn-gold"
           disabled={loading}
-          className="btn-gold px-6 py-3"
         >
           {loading ? 'Sending...' : 'Send Message'}
         </button>

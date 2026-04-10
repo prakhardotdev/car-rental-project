@@ -1,13 +1,18 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 const contactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String,
-  isRead: {
-    type: Boolean,
-    default: false
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  message: {
+    type: String,
+    required: true
   }
 }, { timestamps: true })
 
-export default mongoose.model("Contact", contactSchema)
+export default mongoose.model('Contact', contactSchema)
