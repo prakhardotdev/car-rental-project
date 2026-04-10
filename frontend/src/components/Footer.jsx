@@ -35,37 +35,24 @@ export default function Footer() {
 
           {/* Links */}
           <div>
-            <h4 className="text-white font-body font-semibold text-sm mb-5">Company</h4>
-            <ul className="space-y-3">
-              {['About Us', 'Careers', 'Blog', 'Press', 'Contact'].map(item => (
-                <li key={item}>
-                  <Link to="#" className="text-night-400 hover:text-gold-300 text-sm font-body transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-body font-semibold text-sm mb-5">Support</h4>
-            <ul className="space-y-3">
-              {['Help Center', 'Insurance Policy', 'Cancellation', 'Terms of Service', 'Privacy Policy'].map(item => (
-                <li key={item}>
-                  <Link to="#" className="text-night-400 hover:text-gold-300 text-sm font-body transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+  <h3 className="text-white font-semibold mb-4">Company</h3>
+  <ul className="space-y-2 text-gray-400">
+    <li>
+      <Link to="/about" className="hover:text-white">About Us</Link>
+    </li>
+    <li>
+      <Link to="/contact" className="hover:text-white">Contact</Link>
+    </li>
+  </ul>
+</div>
+         
         </div>
 
         <div className="divider-gold mb-8" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-night-500 text-xs font-body">
-            © 2024 LuxeDrive. All rights reserved.
+            © 2026 LuxeDrive. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             {[
