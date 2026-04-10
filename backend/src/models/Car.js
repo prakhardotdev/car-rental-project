@@ -12,99 +12,83 @@ const reviewSchema = new mongoose.Schema(
 
 const carSchema = new mongoose.Schema(
   {
-    // ── Identity ──────────────────────────────────────────────
-    name:  { type: String, required: [true, 'Car name is required'], trim: true },
-    brand: { type: String, required: [true, 'Brand is required'],    trim: true },
-    year:  { type: Number, required: [true, 'Year is required'], min: 1990, max: new Date().getFullYear() + 1 },
+    // ── Identity ─────────────────────────
+    name:  { type: String, required: true, trim: true },
+    brand: { type: String, required: true, trim: true },
+    year:  { type: Number, required: true },
     color: { type: String, default: '' },
 
+    // ✅ ONLY ONE FEATURED FIELD (IMPORTANT FIX)
     isFeatured: {
-  type: Boolean,
-  default: false
-},
+      type: Boolean,
+      default: false
+    },
 
-    // ── Category ──────────────────────────────────────────────
+    // ── Category ─────────────────────────
     type: {
-      type:     String,
-      required: [true, 'Type is required'],
-      enum:     ['Sports', 'SUV', 'Sedan', 'Hatchback', 'Convertible', 'Pickup', 'Van'],
+      type: String,
+      required: true,
+      enum: ['Sports', 'SUV', 'Sedan', 'Hatchback', 'Convertible', 'Pickup', 'Van'],
     },
     fuel: {
-      type:     String,
-      required: [true, 'Fuel type is required'],
-      enum:     ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'CNG'],
+      type: String,
+      required: true,
+      enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'CNG'],
     },
     transmission: {
-      type:    String,
-      enum:    ['Automatic', 'Manual'],
+      type: String,
+      enum: ['Automatic', 'Manual'],
       default: 'Automatic',
     },
-    seats: { type: Number, required: true, min: 1, max: 9, default: 5 },
+    seats: { type: Number, default: 5 },
 
-    // ── Performance ───────────────────────────────────────────
-    power:        { type: String, default: '' },  // e.g. "630 HP"
-    topSpeed:     { type: String, default: '' },  // e.g. "318 km/h"
-    acceleration: { type: String, default: '' },  // e.g. "3.2s (0–100)"
-    mileage:      { type: String, default: '' },  // e.g. "8 km/L"
+    // ── Performance ─────────────────────
+    power:        { type: String, default: '' },
+    topSpeed:     { type: String, default: '' },
+    acceleration: { type: String, default: '' },
+    mileage:      { type: String, default: '' },
 
-    // ── Media ─────────────────────────────────────────────────
-    image:  { type: String, required: [true, 'Cover image is required'] },
-    images: { type: [String], default: [] },       // gallery images
+    // ── Media ───────────────────────────
+    image:  { type: String, required: true },
+    images: { type: [String], default: [] },
 
-    // ── Pricing ───────────────────────────────────────────────
+    // ── Pricing ─────────────────────────
     pricePerDay: {
-      type:     Number,
-      required: [true, 'Price per day is required'],
-      min:      [100, 'Minimum price is ₹100'],
+      type: Number,
+      required: true,
     },
 
-    // ── Location + Availability ───────────────────────────────
-    location:  { type: String, required: [true, 'Location is required'], trim: true },
+    // ── Location ────────────────────────
+    location:  { type: String, required: true },
     available: { type: Boolean, default: true },
-    featured:  { type: Boolean, default: false },
 
-    // ── Description + Features ────────────────────────────────
+    // ❌ REMOVED DUPLICATE "featured" FIELD
+
+    // ── Description ─────────────────────
     description: { type: String, default: '' },
     features:    { type: [String], default: [] },
 
-    // ── Reviews (embedded) ────────────────────────────────────
+    // ── Reviews ─────────────────────────
     reviews:      { type: [reviewSchema], default: [] },
     rating:       { type: Number, default: 0 },
     totalReviews: { type: Number, default: 0 },
 
-    // ── Admin ─────────────────────────────────────────────────
-    cloudinaryIds: { type: [String], default: [], select: false },
+    // ── Admin ───────────────────────────
+    cloudinaryIds: { type: [String], default: [] },
     addedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:  'User',
+      ref: 'User',
     },
   },
   {
     timestamps: true,
-    toJSON:  { virtuals: true },
-    toObject:{ virtuals: true },
   }
 )
 
-// ── Indexes ────────────────────────────────────────────────────
+// Indexes
 carSchema.index({ brand: 1 })
 carSchema.index({ type: 1 })
-carSchema.index({ available: 1 })
 carSchema.index({ pricePerDay: 1 })
 carSchema.index({ location: 1 })
-carSchema.index({ featured: -1 })
-carSchema.index({ name: 'text', brand: 'text', description: 'text' })  // full-text search
-
-// ── Method: recalculate rating after new review ────────────────
-carSchema.methods.updateRating = function () {
-  if (this.reviews.length === 0) {
-    this.rating       = 0
-    this.totalReviews = 0
-  } else {
-    const sum         = this.reviews.reduce((acc, r) => acc + r.rating, 0)
-    this.rating       = Math.round((sum / this.reviews.length) * 10) / 10
-    this.totalReviews = this.reviews.length
-  }
-}
 
 module.exports = mongoose.model('Car', carSchema)
