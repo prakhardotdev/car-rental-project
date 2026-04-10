@@ -1,6 +1,31 @@
 import { Link } from 'react-router-dom'
 import { Car, Instagram, Twitter, Linkedin, Github, ArrowRight } from 'lucide-react'
 
+
+
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import api from '../utils/api'
+
+const [email, setEmail] = useState('')
+const [loading, setLoading] = useState(false)
+
+const handleSubscribe = async () => {
+  if (!email) return toast.error('Enter email')
+
+  try {
+    setLoading(true)
+
+    await api.post('/subscribe', { email })
+
+    toast.success('Subscribed successfully 🚀')
+    setEmail('')
+  } catch (err) {
+    toast.error(err.response?.data?.message || 'Error')
+  } finally {
+    setLoading(false)
+  }
+}
 export default function Footer() {
   return (
     <footer className="bg-night-800/50 border-t border-white/8 mt-auto">
@@ -23,10 +48,14 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="mt-6 flex gap-2 max-w-sm">
               <input
-                type="email"
-                placeholder="Your email for updates"
-                className="flex-1 input-dark py-2.5 text-sm"
-              />
+  type="email"
+  placeholder="Your email for updates"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  className="input-dark"
+/>
+
+
               <button className="btn-gold py-2.5 px-4 text-sm shrink-0">
                 <ArrowRight size={16} />
               </button>

@@ -19,6 +19,8 @@ import contactRoutes from './src/routes/contactRoutes.js'
 
 // Error middleware
 import { notFound, errorHandler } from './src/middleware/errorMiddleware.js'
+const subscriberRoutes = require('./src/routes/subscriberRoutes')
+
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -59,7 +61,7 @@ app.use('/api/payments', paymentRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/contact', contactRoutes)
-
+app.use('/api/subscribe', subscriberRoutes)
 // Error handlers
 app.use(notFound)
 app.use(errorHandler)

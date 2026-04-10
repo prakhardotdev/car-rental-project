@@ -14,7 +14,7 @@ import LoadingScreen from './components/LoadingScreen'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import AdminMessages from "./pages/AdminMessages"
-
+import { Toaster } from 'react-hot-toast'
 
 
 
@@ -42,6 +42,7 @@ export default function App() {
           <Route path="/cars/:id"  element={<CarDetail />} />
           <Route path="/login"     element={<Login />} />
           <Route path="/signup"    element={<Signup />} />
+          <Toaster position="top-right" />
 
 <Route path="/about" element={<About Us />} />
 <Route path="/contact" element={<Contact Us />} />
