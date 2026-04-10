@@ -10,13 +10,26 @@ exports.getCars = async (req, res) => {
   }
 }
 
-// 🔥 GET FEATURED CARS (IMPORTANT FIX)
+// 🔥 GET FEATURED CARS (FINAL FIX)
 exports.getFeaturedCars = async (req, res) => {
   try {
-    const cars = await Car.find({ isFeatured: true }) // 🔥 correct field
-    res.json({ success: true, data: cars })
+    const cars = await Car.find({
+      $or: [
+        { isFeatured: true },
+        { isFeatured: "true" } // 🔥 string bhi handle karega
+      ]
+    })
+
+    res.json({
+      success: true,
+      count: cars.length,
+      data: cars
+    })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
   }
 }
 
@@ -35,26 +48,49 @@ exports.getCarById = async (req, res) => {
   }
 }
 
-// 🔹 CREATE CAR
+// 🔹 CREATE CAR (FIXED)
 exports.createCar = async (req, res) => {
   try {
+    // 🔥 ensure boolean
+    if (req.body.isFeatured === "true") req.body.isFeatured = true
+    if (req.body.isFeatured === "false") req.body.isFeatured = false
+
     const car = await Car.create(req.body)
-    res.status(201).json({ success: true, data: car })
+
+    res.status(201).json({
+      success: true,
+      data: car
+    })
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message })
+    res.status(400).json({
+      success: false,
+      message: error.message
+    })
   }
 }
 
-// 🔹 UPDATE CAR
+// 🔹 UPDATE CAR (FIXED)
 exports.updateCar = async (req, res) => {
   try {
-    const car = await Car.findByIdAndUpdate(req.params.id, req.body, {
-      new: true
-    })
+    // 🔥 ensure boolean
+    if (req.body.isFeatured === "true") req.body.isFeatured = true
+    if (req.body.isFeatured === "false") req.body.isFeatured = false
 
-    res.json({ success: true, data: car })
+    const car = await Car.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    )
+
+    res.json({
+      success: true,
+      data: car
+    })
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message })
+    res.status(400).json({
+      success: false,
+      message: error.message
+    })
   }
 }
 
@@ -62,13 +98,20 @@ exports.updateCar = async (req, res) => {
 exports.deleteCar = async (req, res) => {
   try {
     await Car.findByIdAndDelete(req.params.id)
-    res.json({ success: true, message: 'Car deleted' })
+
+    res.json({
+      success: true,
+      message: 'Car deleted'
+    })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
   }
 }
 
-// 🔹 ADD REVIEW (dummy for now)
+// 🔹 ADD REVIEW (dummy)
 exports.addReview = async (req, res) => {
   res.json({ success: true, message: 'Review added' })
 }
@@ -82,9 +125,16 @@ exports.checkAvailability = async (req, res) => {
 exports.getBrands = async (req, res) => {
   try {
     const brands = await Car.distinct('brand')
-    res.json({ success: true, data: brands })
+
+    res.json({
+      success: true,
+      data: brands
+    })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
   }
 }
 
@@ -92,8 +142,15 @@ exports.getBrands = async (req, res) => {
 exports.getLocations = async (req, res) => {
   try {
     const locations = await Car.distinct('location')
-    res.json({ success: true, data: locations })
+
+    res.json({
+      success: true,
+      data: locations
+    })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
   }
 }
