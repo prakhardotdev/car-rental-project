@@ -16,8 +16,6 @@ import Contact from './pages/Contact'
 import AdminMessages from "./pages/AdminMessages"
 import { Toaster } from 'react-hot-toast'
 
-
-
 // Protected route wrapper
 function ProtectedRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth()
@@ -33,37 +31,50 @@ export default function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-night-900">
+      
+      {/* 🔥 Toaster yaha hona chahiye */}
+      <Toaster position="top-right" />
+
       <Navbar />
+
       <main className="flex-1">
         <Routes>
-          {/* Public */}
-          <Route path="/"          element={<Home />} />
-          <Route path="/cars"      element={<Cars />} />
-          <Route path="/cars/:id"  element={<CarDetail />} />
-          <Route path="/login"     element={<Login />} />
-          <Route path="/signup"    element={<Signup />} />
-          <Toaster position="top-right" />
 
-<Route path="/about" element={<About Us />} />
-<Route path="/contact" element={<Contact Us />} />
-          {/* Protected — any logged-in user */}
+          {/* Public */}
+          <Route path="/" element={<Home />} />
+          <Route path="/cars" element={<Cars />} />
+          <Route path="/cars/:id" element={<CarDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* ✅ FIXED */}
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+
+          {/* Protected */}
           <Route path="/booking/:id" element={
             <ProtectedRoute><Booking /></ProtectedRoute>
           } />
+
           <Route path="/dashboard" element={
             <ProtectedRoute><Dashboard /></ProtectedRoute>
           } />
 
-          {/* Protected — admin only */}
+          {/* Admin */}
           <Route path="/admin" element={
-            
-            <ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>
-          } /><Route path="/admin/messages" element={<AdminMessages />} />
+            <ProtectedRoute adminOnly>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/admin/messages" element={<AdminMessages />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </main>
+
       <Footer />
     </div>
   )
