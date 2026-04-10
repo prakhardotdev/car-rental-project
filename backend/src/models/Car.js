@@ -18,6 +18,11 @@ const carSchema = new mongoose.Schema(
     year:  { type: Number, required: [true, 'Year is required'], min: 1990, max: new Date().getFullYear() + 1 },
     color: { type: String, default: '' },
 
+    isFeatured: {
+  type: Boolean,
+  default: false
+},
+
     // ── Category ──────────────────────────────────────────────
     type: {
       type:     String,
