@@ -24,14 +24,28 @@ import { notFound, errorHandler } from './src/middleware/errorMiddleware.js'
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// 🔥 CORS FIX (ONLY ONE TIME USE)
+// 🔥 CORS CONFIG (BEST VERSION)
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://car-rental-project15.vercel.app'
+]
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://car-rental-project15.vercel.app'
-  ],
+  origin: function (origin, callback) {
+    // allow requests with no origin (mobile apps, postman)
+    if (!origin) return callback(null, true)
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    } else {
+      return callback(new Error('CORS not allowed'))
+    }
+  },
   credentials: true
 }))
+
+// ✅ VERY IMPORTANT (preflight fix)
+app.options('*', cors())
 
 // Security
 app.use(helmet())
