@@ -11,12 +11,19 @@ const getCars = async (req, res) => {
 }
 
 // ✅ Featured cars
-const getFeaturedCars = async (req, res) => {
+exports.getFeaturedCars = async (req, res) => {
   try {
-    const cars = await Car.find({ isFeatured: true })
-    res.json({ success: true, data: cars })
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message })
+    const cars = await Car.find({ isFeatured: true }) // 🔥 IMPORTANT
+
+    res.json({
+      success: true,
+      data: cars
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
   }
 }
 
