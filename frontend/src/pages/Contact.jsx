@@ -1,5 +1,4 @@
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import api from '../utils/api'
 
@@ -11,6 +10,11 @@ export default function Contact() {
   })
   const [loading, setLoading] = useState(false)
 
+  // ✅ FIX: reload par old toast remove
+  useEffect(() => {
+    toast.dismiss()
+  }, [])
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
@@ -20,8 +24,10 @@ export default function Contact() {
     setLoading(true)
 
     try {
-      await api.post('/contact', form) // backend API
-      toast.success('Message sent successfully 🚀')
+      await api.post('/contact', form)
+      toast.success('Message sent successfully 🚀', {
+        duration: 2000
+      })
       setForm({ name: '', email: '', message: '' })
     } catch (err) {
       toast.error('Failed to send message')
@@ -76,4 +82,4 @@ export default function Contact() {
       </form>
     </div>
   )
-} toast.success("Message sent successfully")
+}
