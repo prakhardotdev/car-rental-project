@@ -16,23 +16,25 @@ import paymentRoutes from './src/routes/paymentRoutes.js'
 import uploadRoutes from './src/routes/uploadRoutes.js'
 import adminRoutes from './src/routes/adminRoutes.js'
 import contactRoutes from './src/routes/contactRoutes.js'
+import subscriberRoutes from './src/routes/subscriberRoutes.js'
 
 // Error middleware
 import { notFound, errorHandler } from './src/middleware/errorMiddleware.js'
-const subscriberRoutes = require('./src/routes/subscriberRoutes')
-
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// Security
-app.use(helmet())
-
-// ✅ SIMPLE & BEST CORS FIX (no future issues)
+// 🔥 CORS FIX (ONLY ONE TIME USE)
 app.use(cors({
-  origin: true,
+  origin: [
+    'http://localhost:5173',
+    'https://car-rental-project15.vercel.app'
+  ],
   credentials: true
 }))
+
+// Security
+app.use(helmet())
 
 // Rate limit
 const limiter = rateLimit({
@@ -48,7 +50,7 @@ app.use(express.urlencoded({ extended: true }))
 // Logger
 app.use(morgan('dev'))
 
-// ✅ Health route (important for testing)
+// Health route
 app.get('/', (req, res) => {
   res.send('API is running 🚀')
 })
@@ -62,6 +64,7 @@ app.use('/api/upload', uploadRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/contact', contactRoutes)
 app.use('/api/subscribe', subscriberRoutes)
+
 // Error handlers
 app.use(notFound)
 app.use(errorHandler)
