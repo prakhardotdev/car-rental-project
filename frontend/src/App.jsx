@@ -15,6 +15,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import AdminMessages from "./pages/AdminMessages"
 import { Toaster } from 'react-hot-toast'
+import Success from './pages/Success'
 
 // Protected route wrapper
 function ProtectedRoute({ children, adminOnly = false }) {
@@ -46,7 +47,8 @@ export default function App() {
           <Route path="/cars/:id" element={<CarDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
+<Route path="/success" element={<Success />} />
+<Route path="/cancel" element={<h1 className="text-white mt-40 text-center">Payment Cancelled ❌</h1>} />
           {/* ✅ FIXED */}
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
