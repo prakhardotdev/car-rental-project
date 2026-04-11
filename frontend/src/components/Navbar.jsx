@@ -4,44 +4,43 @@ import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 
 export default function Navbar() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <header className="fixed top-0 w-full z-50 backdrop-blur-lg border-b border-white/10 bg-white/80 dark:bg-night-900/90">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <header className="fixed top-0 w-full z-50 bg-night-900/95 backdrop-blur border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
 
         {/* LOGO */}
-        <Link className="text-xl font-bold text-gray-900 dark:text-white">
+        <Link to="/" className="text-xl font-semibold text-white">
           Luxe<span className="text-yellow-500">Drive</span>
         </Link>
 
         {/* NAV */}
-        <nav className="flex gap-6 font-medium">
-          <NavLink to="/" className="text-gray-700 dark:text-night-200 hover:text-yellow-500">Home</NavLink>
-          <NavLink to="/cars" className="text-gray-700 dark:text-night-200 hover:text-yellow-500">Cars</NavLink>
-          <NavLink to="/about" className="text-gray-700 dark:text-night-200 hover:text-yellow-500">About</NavLink>
-          <NavLink to="/contact" className="text-gray-700 dark:text-night-200 hover:text-yellow-500">Contact</NavLink>
+        <nav className="flex gap-8 text-sm font-medium text-night-200">
+          <NavLink to="/" className="hover:text-white">Home</NavLink>
+          <NavLink to="/cars" className="hover:text-white">Browse Cars</NavLink>
+          <NavLink to="/about" className="hover:text-white">About</NavLink>
+          <NavLink to="/contact" className="hover:text-white">Contact</NavLink>
         </nav>
 
         {/* RIGHT */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
 
-          <button onClick={toggleTheme}>
-            {theme === 'dark' ? <Sun /> : <Moon />}
+          {/* THEME */}
+          <button onClick={toggleTheme} className="text-night-300 hover:text-white">
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {user ? (
-            <button onClick={logout} className="bg-yellow-500 px-3 py-1 rounded text-black">
-              Logout
-            </button>
-          ) : (
-            <Link to="/login" className="bg-yellow-500 px-3 py-1 rounded text-black">
-              Login
-            </Link>
-          )}
-        </div>
+          {/* LOGIN */}
+          <Link
+            to="/login"
+            className="bg-yellow-500 text-black px-4 py-1.5 rounded-lg text-sm font-medium"
+          >
+            Login
+          </Link>
 
+        </div>
       </div>
     </header>
   )
